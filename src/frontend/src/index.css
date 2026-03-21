@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #FFE105;
+    --color-secondary: #FF6405;
+    --color-tertiary: #0523ff;
+    --color-background: #9d9d9d;
+
+    --animate-spin: rotate 60s linear infinite;
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}

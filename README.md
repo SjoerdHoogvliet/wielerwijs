@@ -9,7 +9,10 @@ Om op te starten is een Apache Tomcat (ik gebruik versie 9.0.76) configuratie no
 cd src/frontend
 npm run dev
 ```
+
+## Postman
+
 > [!WARNING]
-> Let op, IDs zijn gesimplificieerd naar getallen. In werkelijkheid zal elk nieuw aangemaakt object een uniek ID krijgen waardoor deze niet direct in te vullen zijn in de Postman collectie. Verander deze waardes voor de juiste resultaten.
+> Let op, IDs zijn in de Postman collectie gesimplificieerd naar getallen. In werkelijkheid zal elk nieuw aangemaakt object een uniek ID krijgen waardoor deze niet direct in te vullen zijn in de Postman collectie. Verander deze waardes voor de juiste resultaten.
 
 Gebruik de [bijgevoegde Postman collection](./IPASS.postman_collection.json) om renner data in te laden wanneer je de app voor het eerst opstart. 

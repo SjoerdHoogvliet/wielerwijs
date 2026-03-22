@@ -62,13 +62,13 @@ export default function CreateTeam() {
       />
       <div className="flex space-x-8">
         <div>
-          <h2>Renners beschikbaar</h2>
+          <h2 className="text-3xl py-4">Beschikbare renners</h2>
           <div className="grid grid-cols-3 w-lg">
             {rennerElements}   
           </div>
         </div>
         <div>
-          <h2>Team</h2>
+          <h2 className="text-3xl py-4">Team</h2>
           <div className="grid grid-cols-3 w-lg">
             {team.map(renner => <RennerDisplay renner={renner} function={() => rennerSwitch(renner)} />)}
           </div>
@@ -77,7 +77,7 @@ export default function CreateTeam() {
           className="bottom-0 right-0 bg-secondary hover:bg-primary hover:text-background duration-150 max-h-12 text-white px-4 py-2 rounded-md hover:cursor-pointer"
           onClick={() => saveTeam()}
         >
-          Save
+          Opslaan
         </button>
       </div>
     </div>

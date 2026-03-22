@@ -1,6 +1,4 @@
 export default function TeamDisplay(props) {
-
-
     return (
         <div 
             className="flex flex-col aspect-square size-64 p-4 rounded-md shadow-md"
@@ -16,13 +14,21 @@ export default function TeamDisplay(props) {
                     className="bg-green-500 text-white px-4 py-2 rounded-md hover:cursor-pointer"
                     onClick={props.likeTeam}
                 >
-                    Like {props.team.likes}
+                    Wijs {props.team.likes}
                 </button>
                 <button
                     className="bg-red-500 text-white px-4 py-2 rounded-md hover:cursor-pointer"
                     onClick={props.dislikeTeam}
                 >
-                    Dislike {props.team.dislikes}
+                    Onwijs {props.team.dislikes}
+                </button>
+            </div>
+            <div className="mt-auto justify-end flex space-x-4">
+                <button 
+                    className="text-secondary hover:cursor-pointer"
+                    onClick={props.removeTeam}
+                >
+                    Verwijderen
                 </button>
             </div>
         </div>

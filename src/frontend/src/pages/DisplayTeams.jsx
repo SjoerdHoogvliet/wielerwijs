@@ -40,13 +40,24 @@ export default function DisplayTeams() {
         loadData()
     }
 
+    function removeTeam(id) {
+        fetch('http://localhost:8080/api/team/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        loadData()
+    }
+
     return (
         <div className="mx-32">
             <div className="flex">
                 <div>
                     <h2 className="text-4xl p-4">Teams</h2>
                     <div className="flex space-x-8 px-4">
-                        {teams.map(team => <TeamDisplay team={team} likeTeam={() => likeTeam(team.id)} dislikeTeam={() => dislikeTeam(team.id)} />)}
+                        {teams.map(team => <TeamDisplay team={team} likeTeam={() => likeTeam(team.id)} dislikeTeam={() => dislikeTeam(team.id)} removeTeam={() => removeTeam(team.id)} />)}
                     </div>
                 </div>
             </div>

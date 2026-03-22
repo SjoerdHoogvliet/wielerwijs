@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import nl.hu.wielerwijs.domain.Renner;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Path;
@@ -21,6 +22,11 @@ public class RennerRepository {
     }
 
     public void loadRenners() {
+        if (!new File("rennerstore.csv").exists()) {
+            System.out.println("No rennerstore.csv found, creating new file");
+            saveRenners();
+        }
+
         Path path = Paths.get("rennerstore.csv");
         System.out.println(path.toAbsolutePath());
         try (CSVReader reader = new CSVReader(new FileReader("rennerstore.csv"))) {

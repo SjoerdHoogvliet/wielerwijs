@@ -5,11 +5,11 @@ import com.opencsv.CSVWriter;
 import nl.hu.wielerwijs.domain.Renner;
 import nl.hu.wielerwijs.domain.Team;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class TeamRepository {
@@ -22,6 +22,11 @@ public class TeamRepository {
     }
 
     public void loadTeams() {
+        if (!new File("teamstore.csv").exists()) {
+            System.out.println("No teamstore.csv found, creating new file");
+            saveTeams();
+        }
+
         try (CSVReader reader = new CSVReader(new FileReader("teamstore.csv"))) {
             String[] nextLine;
             reader.readNext(); // skip header

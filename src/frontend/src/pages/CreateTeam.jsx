@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import RennerDisplay from "../components/RennerDisplay.jsx"
 
 export default function CreateTeam() {
-  const [renners, setRenners] = useState(null)
+  const [renners, setRenners] = useState([])
   const [rennerElements, setRennerElements] = useState([])
   const [team, setTeam] = useState([])
   const [teamName, setTeamName] = useState("")
@@ -11,28 +11,26 @@ export default function CreateTeam() {
     fetch('http://localhost:8080/api/renner')
       .then(res => res.json())
       .then(data => {
-        console.log(data)
-        setRennerElements([])
         setRenners(data)
-        if(data.length === 0) {
-          setRennerElements(<div>Geen renners gevonden</div>)
-          return
-        }
-        data.map(renner => {
-          setRennerElements(rennerElements => [...rennerElements, <RennerDisplay renner={renner} function={() => rennerSwitch(renner)} />])
-        })
       })
   }, [])
 
-  function rennerSwitch(renner) {
+  function addRennerToTeam(renner) {
     console.log(renner)
+    console.log(team)
+    
     if (team.includes(renner)) {
-      setTeam(team.filter(r => r.id !== renner.id))
+      console.log("Al gebruikt")
       return
     }
+
     setTeam(team => [...team, renner])
 
     console.log(team)
+  }
+
+  function removeRennerFromTeam(renner) {
+    setTeam(team => team.filter(r => r.id !== renner.id))
   }
 
   function saveTeam() {
@@ -49,6 +47,9 @@ export default function CreateTeam() {
       body: JSON.stringify(teamObject)
     })
 
+    setTeam([])
+    setTeamName("")
+
     console.log("Team: ", teamObject)
   }
 
@@ -64,13 +65,13 @@ export default function CreateTeam() {
         <div>
           <h2 className="text-3xl py-4">Beschikbare renners</h2>
           <div className="grid grid-cols-3 w-lg">
-            {rennerElements}   
+            {renners.map(renner => <RennerDisplay renner={renner} function={() => addRennerToTeam(renner)} />)}
           </div>
         </div>
         <div>
           <h2 className="text-3xl py-4">Team</h2>
           <div className="grid grid-cols-3 w-lg">
-            {team.map(renner => <RennerDisplay renner={renner} function={() => rennerSwitch(renner)} />)}
+            {team.map(renner => <RennerDisplay renner={renner} function={() => removeRennerFromTeam(renner)} />)}
           </div>
         </div>
         <button 

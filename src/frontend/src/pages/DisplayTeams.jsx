@@ -53,10 +53,10 @@ export default function DisplayTeams() {
 
     return (
         <div className="mx-32">
-            <div className="flex">
+            <div className="flex w-full">
                 <div>
                     <h2 className="text-4xl p-4">Teams</h2>
-                    <div className="flex space-x-8 px-4">
+                    <div className="grid-cols-4 grid space-y-8 space-x-8 px-4">
                         {teams.map(team => <TeamDisplay team={team} likeTeam={() => likeTeam(team.id)} dislikeTeam={() => dislikeTeam(team.id)} removeTeam={() => removeTeam(team.id)} />)}
                     </div>
                 </div>

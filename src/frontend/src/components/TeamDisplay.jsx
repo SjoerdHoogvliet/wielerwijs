@@ -25,7 +25,7 @@ export default function TeamDisplay(props) {
             </div>
             <div className="mt-auto justify-end flex space-x-4">
                 <button 
-                    className="text-secondary hover:cursor-pointer"
+                    className="text-secondary hover:text-secondary-hovered hover:cursor-pointer"
                     onClick={props.removeTeam}
                 >
                     Verwijderen

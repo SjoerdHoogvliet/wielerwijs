@@ -53,7 +53,7 @@ export default function CreateTeam() {
   }
 
   return (
-    <div className="mx-32 p-4">
+    <div className="mx-32 p-4 flex flex-col">
       <input 
         type="text" 
         placeholder="Nieuwe teamnaam"  
@@ -74,7 +74,7 @@ export default function CreateTeam() {
           </div>
         </div>
         <button 
-          className="bottom-0 right-0 bg-secondary hover:bg-primary hover:text-background duration-150 max-h-12 text-white px-4 py-2 rounded-md hover:cursor-pointer"
+          className="justify-end mt-auto bg-secondary hover:bg-secondary-hovered duration-150 max-h-12 text-white px-4 py-2 rounded-md hover:cursor-pointer"
           onClick={() => saveTeam()}
         >
           Opslaan

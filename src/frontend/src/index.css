@@ -2,7 +2,9 @@
 
 @theme {
     --color-primary: #FFE105;
+    --color-primary-hovered: #efc903;
     --color-secondary: #FF6405;
+    --color-secondary-hovered: #f04f06;
     --color-tertiary: #0523ff;
     --color-background: #9d9d9d;
 

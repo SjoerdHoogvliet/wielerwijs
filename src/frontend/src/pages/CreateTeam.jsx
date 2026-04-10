@@ -3,9 +3,9 @@ import RennerDisplay from "../components/RennerDisplay.jsx"
 
 export default function CreateTeam() {
   const [renners, setRenners] = useState([])
-  const [rennerElements, setRennerElements] = useState([])
   const [team, setTeam] = useState([])
   const [teamName, setTeamName] = useState("")
+  const [rennerSearch, setRennerSearch] = useState("")
 
   useEffect(() => {
     fetch('http://localhost:8080/api/renner')
@@ -53,25 +53,40 @@ export default function CreateTeam() {
     console.log("Team: ", teamObject)
   }
 
+  function filterRenners() {
+    if (rennerSearch === "") {
+      return renners
+    }
+    return renners.filter(renner => renner.naam.toLowerCase().includes(rennerSearch.toLowerCase()))
+  }
+
   return (
-    <div className="mx-32 p-4 flex flex-col">
+    <div className="mx-32 p-2 flex flex-col">
       <input 
         type="text" 
         placeholder="Nieuwe teamnaam"  
         value={teamName} 
         onChange={e => setTeamName(e.target.value)}
+        className="p-2 rounded-md duration-150"
       />
       <div className="flex space-x-8">
-        <div>
+        <div className="h-[80vh] w-xl">
           <h2 className="text-3xl py-4">Beschikbare renners</h2>
-          <div className="grid grid-cols-3 w-lg">
-            {renners.map(renner => <RennerDisplay renner={renner} function={() => addRennerToTeam(renner)} />)}
+          <input 
+            type="text" 
+            placeholder="Zoek een renner"  
+            value={rennerSearch} 
+            onChange={e => setRennerSearch(e.target.value)}
+            className="p-2 m-2 rounded-md duration-150"
+          />
+          <div className="h-[65vh] flex flex-col space-x-4 space-y-4 overflow-y-auto">
+            {filterRenners().map(renner => <RennerDisplay renner={renner} function={() => addRennerToTeam(renner)} />)}
           </div>
         </div>
-        <div>
+        <div className="w-xl h-[80vh]">
           <h2 className="text-3xl py-4">Team</h2>
-          <div className="grid grid-cols-3 w-lg">
-            {team.map(renner => <RennerDisplay renner={renner} function={() => removeRennerFromTeam(renner)} />)}
+          <div className="flex flex-col space-x-4 space-y-4 h-[70vh] overflow-y-auto">
+            {team.map(renner => <RennerDisplay renner={renner} function={() => removeRennerFromTeam(renner)} removal />)}
           </div>
         </div>
         <button 

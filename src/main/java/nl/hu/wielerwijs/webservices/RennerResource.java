@@ -5,7 +5,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import nl.hu.wielerwijs.data.RennerRepository;
-import nl.hu.wielerwijs.data.TeamRepository;
 import nl.hu.wielerwijs.domain.Renner;
 
 import java.io.StringReader;

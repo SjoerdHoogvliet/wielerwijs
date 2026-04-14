@@ -23,7 +23,7 @@ public class UserResource {
 
     private JsonObject userToJsonConverter(User user) {
         JsonObjectBuilder job = Json.createObjectBuilder();
-        job.add("id", user.getID());
+        job.add("id", user.getId());
         job.add("username", user.getUsername());
         job.add("passwordHash", user.getPasswordHash());
         job.add("role", user.getRole());
@@ -40,13 +40,13 @@ public class UserResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getUsers() {
-        return userListToJsonConverter(userRepository.getUsers());
+    public String getUsers() {
+        return userListToJsonConverter(userRepository.getUsers()).toString();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject register(String requestBody) {
+    public String register(String requestBody) {
         JsonObject jsonObject = Json.createReader(new StringReader(requestBody)).readObject();
 
 
@@ -54,7 +54,7 @@ public class UserResource {
         User user = new User(jsonObject.getString("username"), passwordHash, "ROLE_USER");
 
         userRepository.addUser(user);
-        return userToJsonConverter(userRepository.getUserById(user.getID()));
+        return userToJsonConverter(userRepository.getUserById(user.getId())).toString();
     }
 
     @POST

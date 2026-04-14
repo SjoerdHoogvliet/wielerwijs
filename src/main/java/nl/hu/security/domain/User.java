@@ -3,31 +3,31 @@ package nl.hu.security.domain;
 import java.util.UUID;
 
 public class User {
-    private String ID;
+    private String Id;
     private String username;
     private String passwordHash;
     private String role;
 
     public User(String username, String passwordHash, String role) {
-        this.ID = UUID.randomUUID().toString();
+        this.Id = UUID.randomUUID().toString();
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
     }
 
-    public User(String ID, String username, String passwordHash, String role) {
-        this.ID = ID;
+    public User(String Id, String username, String passwordHash, String role) {
+        this.Id = Id;
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return Id;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setId(String id) {
+        this.Id = id;
     }
 
     public String getUsername() {

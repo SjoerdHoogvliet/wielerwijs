@@ -3,7 +3,6 @@ package nl.hu.security.data;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import nl.hu.security.domain.User;
-import nl.hu.wielerwijs.domain.Renner;
 
 import java.io.File;
 import java.io.FileReader;
@@ -48,7 +47,7 @@ public class UserRepository {
         try (CSVWriter writer = new CSVWriter(new FileWriter("userstore.csv"))) {
             writer.writeNext(new String[]{"ID", "Naam", "Gebruikersnaam", "Wachtwoord", "Rol"});
             for (User user : users) {
-                writer.writeNext(new String[]{user.getID(), user.getUsername(), user.getPasswordHash(), user.getRole()});
+                writer.writeNext(new String[]{user.getId(), user.getUsername(), user.getPasswordHash(), user.getRole()});
                 System.out.println(user);
             }
         } catch (Exception e) {
@@ -63,7 +62,7 @@ public class UserRepository {
 
     public User getUserById(String id) {
         for (User user : users) {
-            if (user.getID().trim().equals(id.trim())) {
+            if (user.getId().trim().equals(id.trim())) {
                 return user;
             }
         }
@@ -81,9 +80,9 @@ public class UserRepository {
 
     public void addUser(User user) {
         // Though UUID basically guarantees uniqueness, there is no absolute guarantee, check uniqueness for certainty
-        while (getUserById(user.getID()) != null) {
+        while (getUserById(user.getId()) != null) {
             String newId = UUID.randomUUID().toString();
-            user.setID(newId);
+            user.setId(newId);
         }
 
         users.add(user);

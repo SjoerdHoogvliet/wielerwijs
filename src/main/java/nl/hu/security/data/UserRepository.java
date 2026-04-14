@@ -27,7 +27,6 @@ public class UserRepository {
             saveUsers();
         }
 
-        Path path = Paths.get("userstore.csv");
         try (CSVReader reader = new CSVReader(new FileReader("userstore.csv"))) {
             String[] nextLine;
             reader.readNext(); // skip header

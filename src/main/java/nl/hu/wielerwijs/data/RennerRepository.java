@@ -26,14 +26,11 @@ public class RennerRepository {
             System.out.println("No rennerstore.csv found, creating new file");
             saveRenners();
         }
-
-        Path path = Paths.get("rennerstore.csv");
-        System.out.println(path.toAbsolutePath());
+        
         try (CSVReader reader = new CSVReader(new FileReader("rennerstore.csv"))) {
             String[] nextLine;
             reader.readNext(); // skip header
             while ((nextLine = reader.readNext()) != null) {
-                System.out.println(nextLine[0] + " " + nextLine[1]);
                 Renner renner = new Renner(nextLine[0], nextLine[1]);
                 renners.add(renner);
             }

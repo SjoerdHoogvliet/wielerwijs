@@ -37,7 +37,9 @@ public class RennerRepository {
                 Renner renner = new Renner(nextLine[0], nextLine[1]);
                 renners.add(renner);
             }
-        } catch (Exception e) {
+        }
+        // TODO: More specific exception handling
+        catch (Exception e) {
             System.out.println("Error while loading renners");
             e.printStackTrace();
         }
@@ -79,7 +81,6 @@ public class RennerRepository {
 
     public Renner getRennerById(String id) {
         for (Renner renner : renners) {
-            System.out.println(id.trim() + " vs " + renner.getId() + " = " + renner.getId().equals(id));
             if (renner.getId().trim().equals(id.trim())) {
                 return renner;
             }

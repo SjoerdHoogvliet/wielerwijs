@@ -5,7 +5,14 @@ export default function DisplayTeams() {
     const [teams, setTeams] = useState([])
 
      async function loadData () {
-        await fetch('http://localhost:8080/api/team')
+        console.log("Bearer " + sessionStorage.getItem("jwtToken"))
+
+        await fetch('http://localhost:8080/api/team', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem("jwtToken")}`
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 setTeams(data)
@@ -20,6 +27,7 @@ export default function DisplayTeams() {
         fetch('http://localhost:8080/api/team/' + id, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem("jwtToken")}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ like: true })
@@ -32,6 +40,7 @@ export default function DisplayTeams() {
         fetch('http://localhost:8080/api/team/' + id, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem("jwtToken")}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ like: false })
@@ -44,6 +53,7 @@ export default function DisplayTeams() {
         fetch('http://localhost:8080/api/team/' + id, {
             method: 'DELETE',
             headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem("jwtToken")}`,
                 'Content-Type': 'application/json'
             }
         })

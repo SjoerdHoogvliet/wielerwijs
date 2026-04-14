@@ -8,7 +8,12 @@ export default function CreateTeam() {
   const [rennerSearch, setRennerSearch] = useState("")
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/renner')
+    fetch('http://localhost:8080/api/renner', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem("jwtToken")}`
+      }
+    })
       .then(res => res.json())
       .then(data => {
         setRenners(data)
@@ -42,7 +47,8 @@ export default function CreateTeam() {
     fetch('http://localhost:8080/api/team', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem("jwtToken")}`
       },
       body: JSON.stringify(teamObject)
     })

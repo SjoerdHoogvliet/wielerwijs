@@ -19,6 +19,7 @@ export default function LoginPage() {
                 setLoginSuccess(data != null)
                 if (data != null) {
                     sessionStorage.setItem("jwtToken", data.token)
+                    sessionStorage.setItem("userId", data.userId)
                 }
             })
     }

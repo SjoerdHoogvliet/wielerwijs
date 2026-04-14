@@ -2,13 +2,12 @@ package nl.hu.security.data;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import nl.hu.security.data.Exceptions.UserNotFoundException;
 import nl.hu.security.domain.User;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -65,7 +64,7 @@ public class UserRepository {
                 return user;
             }
         }
-        return null;
+        throw new UserNotFoundException("User not found");
     }
 
     public User getUserByUsername(String username) {

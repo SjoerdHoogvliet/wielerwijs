@@ -6,6 +6,7 @@ import CreateTeam from './pages/createTeam.jsx'
 import DisplayTeams from './pages/DisplayTeams.jsx'
 import RennerPage from './pages/RennerPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
 import NavBar from './components/NavBar.jsx'
 
 let router = createBrowserRouter([
@@ -24,6 +25,10 @@ let router = createBrowserRouter([
     {
       path: '/login',
       element: <LoginPage />
+    },
+    {
+      path: '/profile',
+      element: <ProfilePage />
     }
   ]
 )

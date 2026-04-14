@@ -1,5 +1,6 @@
 package nl.hu.security.webservices;
 
+import nl.hu.security.data.Exceptions.UserNotFoundException;
 import nl.hu.security.data.UserRepository;
 import nl.hu.security.domain.User;
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,8 +26,6 @@ public class UserResource {
         JsonObjectBuilder job = Json.createObjectBuilder();
         job.add("id", user.getId());
         job.add("username", user.getUsername());
-        job.add("passwordHash", user.getPasswordHash());
-        job.add("role", user.getRole());
         return job.build();
     }
 
@@ -73,10 +72,26 @@ public class UserResource {
         }
 
         String token = generateToken(username, user.getRole());
-        JsonObject tokenResponse = Json.createObjectBuilder()
+        JsonObject loginResponse = Json.createObjectBuilder()
             .add("token", token)
+            .add("userId", user.getId())
             .build();
 
-        return Response.ok(tokenResponse.toString()).build();
+        return Response.ok(loginResponse.toString()).build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserById(@PathParam("id") String id) {
+        try {
+            return Response.ok(userToJsonConverter(userRepository.getUserById(id)).toString()).build();
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).entity(Json.createObjectBuilder().add("message", e.getMessage()).build().toString()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Json.createObjectBuilder().add("message", "Something went wrong").build().toString()).build();
+        }
     }
 }

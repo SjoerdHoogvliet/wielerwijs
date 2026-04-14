@@ -3,17 +3,17 @@ package nl.hu.wielerwijs.domain;
 import nl.hu.security.domain.User;
 
 public class CategoryVote {
-    private String category;
+    private RiderCategoryEnum category;
     private User user;
     private Renner renner;
 
-    public CategoryVote(String category, User user, Renner renner) {
+    public CategoryVote(RiderCategoryEnum category, User user, Renner renner) {
         this.category = category;
         this.user = user;
         this.renner = renner;
     }
 
-    public String getCategory() {
+    public RiderCategoryEnum getCategory() {
         return category;
     }
 

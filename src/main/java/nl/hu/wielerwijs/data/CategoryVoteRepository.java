@@ -5,14 +5,14 @@ import com.opencsv.CSVWriter;
 import nl.hu.security.data.UserRepository;
 import nl.hu.security.domain.User;
 import nl.hu.wielerwijs.data.Exceptions.AlreadyVotedException;
+import nl.hu.wielerwijs.data.Exceptions.NoRennerFoundException;
+import nl.hu.wielerwijs.data.Exceptions.NoUserFoundException;
 import nl.hu.wielerwijs.domain.CategoryVote;
 import nl.hu.wielerwijs.domain.Renner;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +25,8 @@ public class CategoryVoteRepository {
     public CategoryVoteRepository(RennerRepository rennerRepository, UserRepository userRepository) {
         this.rennerRepository = rennerRepository;
         this.userRepository = userRepository;
+
+        loadVotes();
     }
 
     public void loadVotes() {
@@ -37,10 +39,16 @@ public class CategoryVoteRepository {
             String[] nextLine;
             reader.readNext(); // skip header
             while ((nextLine = reader.readNext()) != null) {
-                Renner renner = rennerRepository.getRennerById(nextLine[1]);
-                User user = userRepository.getUserByUsername(nextLine[2]);
+                User user = userRepository.getUserById(nextLine[1]);
+                Renner renner = rennerRepository.getRennerById(nextLine[2]);
+                if(renner == null) {
+                    throw new NoRennerFoundException("Renner with Id " + nextLine[2] + " not found");
+                }
+                if(user == null) {
+                    throw new NoUserFoundException("User with Id " + nextLine[1] + " not found");
+                }
 
-                new CategoryVote(nextLine[0], user, renner);
+                categoryVotes.add(new CategoryVote(nextLine[0], user, renner));
             }
         } catch (Exception e) {
             System.out.println("Error while initializing context");
@@ -52,8 +60,7 @@ public class CategoryVoteRepository {
         try (CSVWriter writer = new CSVWriter(new FileWriter("categoryvotestore.csv"))) {
             writer.writeNext(new String[]{"Category", "Username", "RennerID"});
             for (CategoryVote categoryVote : categoryVotes) {
-                writer.writeNext(new String[]{categoryVote.category(), categoryVote.user().getID(), categoryVote.renner().getId()});
-                System.out.println(categoryVote);
+                writer.writeNext(new String[]{categoryVote.getCategory(), categoryVote.getUser().getId(), categoryVote.getRenner().getId()});
             }
         } catch (Exception e) {
             System.out.println("Error while saving votestore");
@@ -61,15 +68,11 @@ public class CategoryVoteRepository {
         }
     }
 
-    public List<CategoryVote> getVotes() {
-        return categoryVotes;
-    }
-
-    public List<CategoryVote> getVotesForRenner(Renner renner) {
+    public List<CategoryVote> getVotesForRenner(String rennerId) {
         List<CategoryVote> returnList = new ArrayList<>();
 
         for (CategoryVote categoryVote : categoryVotes) {
-            if(categoryVote.renner().equals(renner)) {
+            if(categoryVote.getRenner().getId().equals(rennerId)) {
                 returnList.add(categoryVote);
             }
         }
@@ -77,20 +80,31 @@ public class CategoryVoteRepository {
         return returnList;
     }
 
-    public List<CategoryVote> getVotesForUser(User user) {
+    public List<CategoryVote> getVotesForUser(String userId) {
         List<CategoryVote> returnList = new ArrayList<>();
 
         for (CategoryVote categoryVote : categoryVotes) {
-            if(categoryVote.user().equals(user)) {
+            if(categoryVote.getUser().getId().equals(userId)) {
                 returnList.add(categoryVote);
             }
         }
         return returnList;
     }
 
-    public void addVote(CategoryVote categoryVote) {
-        for(CategoryVote vote: getVotesForRenner(categoryVote.renner())){
-            if(vote.user().equals(categoryVote.user())) {
+    public void addVote(String category, String userId, String rennerId) {
+        User user = userRepository.getUserById(userId);
+        Renner renner = rennerRepository.getRennerById(rennerId);
+        if(renner == null) {
+            throw new NoRennerFoundException("Renner with Id " + rennerId + " not found");
+        }
+        if(user == null) {
+            throw new NoUserFoundException("User with Id " + userId + " not found");
+        }
+
+        CategoryVote categoryVote = new CategoryVote(category, user, renner);
+
+        for(CategoryVote vote: getVotesForRenner(categoryVote.getRenner().getId())){
+            if(vote.getUser().equals(categoryVote.getUser())) {
                 throw new AlreadyVotedException("You've already voted for this renner");
             }
         }

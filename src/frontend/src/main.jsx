@@ -4,6 +4,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router'
 import './index.css'
 import CreateTeam from './pages/createTeam.jsx'
 import DisplayTeams from './pages/DisplayTeams.jsx'
+import RennerPage from './pages/RennerPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
 import NavBar from './components/NavBar.jsx'
 
 let router = createBrowserRouter([
@@ -14,6 +16,14 @@ let router = createBrowserRouter([
     {
       path: '/teams',
       element: <DisplayTeams />
+    },
+    {
+      path: '/renner/:rennerID',
+      element: <RennerPage />
+    },
+    {
+      path: '/login',
+      element: <LoginPage />
     }
   ]
 )

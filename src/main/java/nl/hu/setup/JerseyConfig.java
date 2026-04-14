@@ -4,8 +4,10 @@ import javax.ws.rs.ApplicationPath;
 
 import nl.hu.security.data.UserRepository;
 import nl.hu.security.webservices.UserResource;
+import nl.hu.wielerwijs.data.CategoryVoteRepository;
 import nl.hu.wielerwijs.data.RennerRepository;
 import nl.hu.wielerwijs.data.TeamRepository;
+import nl.hu.wielerwijs.webservices.CategoryVoteResource;
 import nl.hu.wielerwijs.webservices.RennerResource;
 import nl.hu.wielerwijs.webservices.TeamResource;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -18,9 +20,11 @@ public class JerseyConfig extends ResourceConfig {
         RennerRepository rennerRepository = new RennerRepository();
         TeamRepository teamRepository = new TeamRepository(rennerRepository);
         UserRepository userRepository = new UserRepository();
+        CategoryVoteRepository categoryVoteRepository = new CategoryVoteRepository(rennerRepository, userRepository);
         register(new RennerResource(rennerRepository));
         register(new TeamResource(teamRepository));
         register(new UserResource(userRepository));
+        register(new CategoryVoteResource(categoryVoteRepository));
         packages("nl.hu.wielerwijs.webservices");
         packages("nl.hu.security.webservices");
     }

@@ -7,6 +7,14 @@ export default function NavBar() {
             <div className="mr-32 space-x-12">
                 <a href="/teams" className=" text-primary hover:text-primary-hovered duration-150">Teams beoordelen</a>
                 <a href="/" className=" text-primary hover:text-primary-hovered duration-150">Team maken</a>
+                {
+                    sessionStorage.getItem("userId") &&
+                    <a href="/profile" className=" text-primary hover:text-primary-hovered duration-150">Mijn profiel</a>
+                }
+                {
+                    !sessionStorage.getItem("userId") &&
+                    <a href="/login" className=" text-primary hover:text-primary-hovered duration-150">Inloggen</a>
+                }
             </div>
         </div>
     )

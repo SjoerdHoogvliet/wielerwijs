@@ -105,8 +105,8 @@ export default function ProfilePage() {
             return [key, categoriesConsidered[key]];
         });
 
-        // Sort the array based on the second element
         items.sort(function(first, second) {
+            // if value of second - first is positive second gets placed to the front (as its bigger than the first item)
             return second[1] - first[1];
         });
 

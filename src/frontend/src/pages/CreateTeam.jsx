@@ -86,13 +86,13 @@ export default function CreateTeam() {
             className="p-2 m-2 rounded-md duration-150"
           />
           <div className="h-[65vh] flex flex-col space-x-4 space-y-4 overflow-y-auto">
-            {filterRenners().map(renner => <RennerDisplay renner={renner} function={() => addRennerToTeam(renner)} />)}
+            {filterRenners().map(renner => <RennerDisplay card renner={renner} function={() => addRennerToTeam(renner)} />)}
           </div>
         </div>
         <div className="w-xl h-[80vh]">
           <h2 className="text-3xl py-4">Team</h2>
           <div className="flex flex-col space-x-4 space-y-4 h-[70vh] overflow-y-auto">
-            {team.map(renner => <RennerDisplay renner={renner} function={() => removeRennerFromTeam(renner)} removal />)}
+            {team.map(renner => <RennerDisplay renner={renner} card function={() => removeRennerFromTeam(renner)} removal />)}
           </div>
         </div>
         <button 

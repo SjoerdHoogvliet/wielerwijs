@@ -1,6 +1,6 @@
 export default function NavBar() {
     return (
-        <div className="bg-background text-primary flex  text-2xl px-4 py-4 w-full justify-between">
+        <div className="bg-background text-primary flex  text-2xl px-4 py-4 w-full justify-between sticky top-0">
             <div>
                 <img src="Logo.png" className="w-22 absolute animate-spin duration-150" /> <h1 className="ml-32" >WielerWijs</h1>
             </div>

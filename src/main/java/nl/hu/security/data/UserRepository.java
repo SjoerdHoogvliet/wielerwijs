@@ -17,13 +17,11 @@ public class UserRepository {
     ArrayList<User> users = new ArrayList<>();
 
     public UserRepository() {
-        System.out.println("Init user repo");
         loadUsers();
     }
 
     public void loadUsers() {
         if (!new File("userstore.csv").exists()) {
-            System.out.println("No userstore.csv found, creating new file");
             saveUsers();
         }
 
@@ -35,7 +33,6 @@ public class UserRepository {
                 users.add(user);
             }
         }
-        // TODO: More specific exception handling
         catch (Exception e) {
             System.out.println("Error while loading users");
             e.printStackTrace();
@@ -47,7 +44,6 @@ public class UserRepository {
             writer.writeNext(new String[]{"ID", "Naam", "Gebruikersnaam", "Wachtwoord", "Rol"});
             for (User user : users) {
                 writer.writeNext(new String[]{user.getId(), user.getUsername(), user.getPasswordHash(), user.getRole().name()});
-                System.out.println(user);
             }
         } catch (Exception e) {
             System.out.println("Error while saving users");

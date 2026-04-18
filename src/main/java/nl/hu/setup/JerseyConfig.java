@@ -16,7 +16,6 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 @ApplicationPath("api")
 public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
-        System.out.println("Initializing JerseyConfig");
         register(CORSFilter.class);
         RennerRepository rennerRepository = new RennerRepository();
         UserRepository userRepository = new UserRepository();

@@ -65,7 +65,6 @@ public class TeamRepository {
                     renners += renner.getId() + ";";
                 }
                 writer.writeNext(new String[]{team.getId(), team.getNaam(), renners, team.getOwner().getId(), String.valueOf(team.getLikes()), String.valueOf(team.getDislikes())});
-                System.out.println(team);
             }
         } catch (Exception e) {
             System.out.println("Error while saving teamstore");

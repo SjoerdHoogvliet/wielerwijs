@@ -26,7 +26,6 @@ public class TeamResource {
         job.add("id", team.getId());
         job.add("naam", team.getNaam());
         if (!team.getRenners().isEmpty()) {
-            System.out.println(team.getRenners());
             JsonArrayBuilder renners = Json.createArrayBuilder();
             for (Renner renner : team.getRenners()) {
                 renners.add(rennerToJsonConverter(renner));
@@ -75,11 +74,9 @@ public class TeamResource {
         List<String> rennerIds = new ArrayList<>();
         if (jsonObject.containsKey("renners")) {
             for (JsonValue renner : jsonObject.getJsonArray("renners")) {
-                System.out.println(renner);
                 // Renner IDs will still have the quotes around them, remove them
                 rennerIds.add(renner.toString().replace("\"", ""));
             }
-            System.out.println(rennerIds);
         }
 
         try {

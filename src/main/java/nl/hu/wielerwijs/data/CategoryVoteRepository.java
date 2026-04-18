@@ -36,7 +36,6 @@ public class CategoryVoteRepository {
 
     public void loadVotes() {
         if (!new File("categoryvotestore.csv").exists()) {
-            System.out.println("No categoryvotestore.csv found, creating new file");
             saveVotes();
         }
 

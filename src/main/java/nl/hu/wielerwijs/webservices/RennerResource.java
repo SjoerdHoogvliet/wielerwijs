@@ -16,11 +16,9 @@ public class RennerResource {
     private final RennerRepository rennerRepository;
 
     public RennerResource(RennerRepository rennerRepository) {
-        System.out.println("Init resource");
         this.rennerRepository = rennerRepository;
     }
 
-    // TODO: static?
     public static JsonObject rennerToJsonConverter(Renner renner) {
         JsonObjectBuilder job = Json.createObjectBuilder();
         job.add("id", renner.getId());

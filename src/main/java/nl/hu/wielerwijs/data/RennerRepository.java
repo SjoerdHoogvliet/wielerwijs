@@ -17,13 +17,11 @@ public class RennerRepository {
     private List<Renner> renners = new ArrayList<>();
 
     public RennerRepository() {
-        System.out.println("Init repo");
         loadRenners();
     }
 
     public void loadRenners() {
         if (!new File("rennerstore.csv").exists()) {
-            System.out.println("No rennerstore.csv found, creating new file");
             saveRenners();
         }
         
@@ -35,7 +33,6 @@ public class RennerRepository {
                 renners.add(renner);
             }
         }
-        // TODO: More specific exception handling
         catch (Exception e) {
             System.out.println("Error while loading renners");
             e.printStackTrace();
@@ -43,12 +40,10 @@ public class RennerRepository {
     }
 
     public void saveRenners() {
-        System.out.println("Saving renners");
         try (CSVWriter writer = new CSVWriter(new FileWriter("rennerstore.csv"))) {
             writer.writeNext(new String[]{"ID", "Naam"});
             for (Renner renner : renners) {
                 writer.writeNext(new String[]{renner.getId(), renner.getNaam()});
-                System.out.println(renner);
             }
         } catch (Exception e) {
             System.out.println("Error while saving renners");

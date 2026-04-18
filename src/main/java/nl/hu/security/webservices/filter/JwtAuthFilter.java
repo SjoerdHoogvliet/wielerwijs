@@ -29,8 +29,6 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
         String authHeader = requestContext.getHeaderString("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("User is unauthorized");
-            System.out.println(authHeader);
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                     .header("Access-Control-Allow-Origin", "http://localhost:5173")
                     .header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")

@@ -5,7 +5,6 @@ import { getCategoryName } from "../utils/RiderCategoryEnumUtil.js"
 
 Chart.register(...registerables)
 
-// TODO: Why is my data not reloading after remove or vote?
 export default function RennerPage() {
     const [renner, setRenner] = useState()
     const [rennerVotes, setRennerVotes] = useState([])

@@ -29,7 +29,7 @@ export default function DisplayTeams() {
                 <div>
                     <h2 className="text-4xl p-4">Teams</h2>
                     <div className="grid-cols-4 grid space-y-8 space-x-8 px-4">
-                        {teams.map(team => <TeamDisplay team={team} square allowRemoval />)}
+                        {teams.map(team => <TeamDisplay team={team} square allowRemoval={sessionStorage.getItem("userRole") == "ROLE_ADMIN"} />)}
                     </div>
                 </div>
             </div>

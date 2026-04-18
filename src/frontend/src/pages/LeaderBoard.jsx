@@ -24,7 +24,7 @@ export default function LeaderBoard() {
             <div className="flex flex-col w-full">
                 <div>
                     <h2 className="text-4xl p-4">Leaderboard</h2>
-                    <div className="px-4 w-full">
+                    <div className="px-4 w-full space-y-4">
                         {teams.map(team => <TeamDisplay team={team} likeTeam={() => likeTeam(team.id)} dislikeTeam={() => dislikeTeam(team.id)} />)}
                     </div>
                 </div>

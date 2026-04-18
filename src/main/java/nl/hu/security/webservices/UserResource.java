@@ -5,6 +5,7 @@ import nl.hu.security.data.UserRepository;
 import nl.hu.security.domain.User;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.annotation.security.RolesAllowed;
 import javax.json.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -46,14 +47,18 @@ public class UserResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public String register(String requestBody) {
-        JsonObject jsonObject = Json.createReader(new StringReader(requestBody)).readObject();
+        try {
+            JsonObject jsonObject = Json.createReader(new StringReader(requestBody)).readObject();
 
+            String passwordHash = BCrypt.hashpw(jsonObject.getString("password"), BCrypt.gensalt(10));
+            User user = new User(jsonObject.getString("username"), passwordHash, UserRole.ROLE_USER);
 
-        String passwordHash = BCrypt.hashpw(jsonObject.getString("password"), BCrypt.gensalt(10));
-        User user = new User(jsonObject.getString("username"), passwordHash, "ROLE_USER");
-
-        userRepository.addUser(user);
-        return userToJsonConverter(userRepository.getUserById(user.getId())).toString();
+            userRepository.addUser(user);
+            return userToJsonConverter(userRepository.getUserById(user.getId())).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).entity(Json.createObjectBuilder().add("message", "Something went wrong").build().toString()).build().toString();
+        }
     }
 
     @POST
@@ -75,6 +80,7 @@ public class UserResource {
         JsonObject loginResponse = Json.createObjectBuilder()
             .add("token", token)
             .add("userId", user.getId())
+            .add("role", user.getRole().toString())
             .build();
 
         return Response.ok(loginResponse.toString()).build();
@@ -85,7 +91,43 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("id") String id) {
         try {
+            if (userRepository.getUserById(id) == null) {
+                throw new UserNotFoundException("User not found");
+            }
             return Response.ok(userToJsonConverter(userRepository.getUserById(id)).toString()).build();
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).entity(Json.createObjectBuilder().add("message", e.getMessage()).build().toString()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Json.createObjectBuilder().add("message", "Something went wrong").build().toString()).build();
+        }
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@PathParam("id") String id) {
+        try {
+            userRepository.removeUser(id);
+            return Response.ok().build();
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).entity(Json.createObjectBuilder().add("message", e.getMessage()).build().toString()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(Json.createObjectBuilder().add("message", "Something went wrong").build().toString()).build();
+        }
+    }
+
+    @PUT
+    @RolesAllowed("ROLE_ADMIN")
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response makeUserAdmin(@PathParam("id") String id) {
+        try {
+            userRepository.makeUserAdmin(id);
+            return Response.ok().build();
         } catch (UserNotFoundException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).entity(Json.createObjectBuilder().add("message", e.getMessage()).build().toString()).build();

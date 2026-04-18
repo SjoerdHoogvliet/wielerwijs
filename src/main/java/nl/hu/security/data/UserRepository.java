@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import nl.hu.security.data.Exceptions.UserNotFoundException;
 import nl.hu.security.domain.User;
+import nl.hu.security.webservices.UserRole;
 
 import java.io.File;
 import java.io.FileReader;
@@ -30,7 +31,7 @@ public class UserRepository {
             String[] nextLine;
             reader.readNext(); // skip header
             while ((nextLine = reader.readNext()) != null) {
-                User user = new User(nextLine[0], nextLine[1], nextLine[2], nextLine[3]);
+                User user = new User(nextLine[0], nextLine[1], nextLine[2], UserRole.valueOf(nextLine[3]));
                 users.add(user);
             }
         }
@@ -45,7 +46,7 @@ public class UserRepository {
         try (CSVWriter writer = new CSVWriter(new FileWriter("userstore.csv"))) {
             writer.writeNext(new String[]{"ID", "Naam", "Gebruikersnaam", "Wachtwoord", "Rol"});
             for (User user : users) {
-                writer.writeNext(new String[]{user.getId(), user.getUsername(), user.getPasswordHash(), user.getRole()});
+                writer.writeNext(new String[]{user.getId(), user.getUsername(), user.getPasswordHash(), user.getRole().name()});
                 System.out.println(user);
             }
         } catch (Exception e) {
@@ -64,7 +65,7 @@ public class UserRepository {
                 return user;
             }
         }
-        throw new UserNotFoundException("User not found");
+        return null;
     }
 
     public User getUserByUsername(String username) {
@@ -87,8 +88,26 @@ public class UserRepository {
         saveUsers();
     }
 
-    public void removeUser(User user) {
-        users.remove(user);
-        saveUsers();
+    public void removeUser(String userId) {
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                users.remove(user);
+                saveUsers();
+                return;
+            }
+        }
+
+        throw new UserNotFoundException("User not found");
+    }
+
+    public void makeUserAdmin(String userId) {
+        for (User user : users) {
+            if (user.getId().equals(userId)) {
+                user.setRole(UserRole.ROLE_ADMIN);
+                saveUsers();
+                return;
+            }
+        }
+        throw new UserNotFoundException("User not found");
     }
 }

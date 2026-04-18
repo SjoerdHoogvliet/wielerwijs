@@ -1,21 +1,23 @@
 package nl.hu.security.domain;
 
+import nl.hu.security.webservices.UserRole;
+
 import java.util.UUID;
 
 public class User {
     private String Id;
     private String username;
     private String passwordHash;
-    private String role;
+    private UserRole role;
 
-    public User(String username, String passwordHash, String role) {
+    public User(String username, String passwordHash, UserRole role) {
         this.Id = UUID.randomUUID().toString();
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
     }
 
-    public User(String Id, String username, String passwordHash, String role) {
+    public User(String Id, String username, String passwordHash, UserRole role) {
         this.Id = Id;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -46,11 +48,11 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 }

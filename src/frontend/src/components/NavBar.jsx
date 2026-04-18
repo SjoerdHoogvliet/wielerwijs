@@ -8,12 +8,13 @@ export default function NavBar() {
                 <a href="/teams" className=" text-primary hover:text-primary-hovered duration-150">Teams beoordelen</a>
                 <a href="/" className=" text-primary hover:text-primary-hovered duration-150">Team maken</a>
                 {
-                    sessionStorage.getItem("userId") &&
-                    <a href="/profile" className=" text-primary hover:text-primary-hovered duration-150">Mijn profiel</a>
+                    sessionStorage.getItem("userRole") == "ROLE_ADMIN" &&
+                    <a href="/add" className=" text-primary hover:text-primary-hovered duration-150">Renners toevoegen</a>
                 }
                 {
-                    !sessionStorage.getItem("userId") &&
-                    <a href="/login" className=" text-primary hover:text-primary-hovered duration-150">Inloggen</a>
+                    sessionStorage.getItem("userId") 
+                    ? <a href="/profile" className=" text-primary hover:text-primary-hovered duration-150">Mijn profiel</a>
+                    : <a href="/login" className=" text-primary hover:text-primary-hovered duration-150">Inloggen</a>
                 }
             </div>
         </div>

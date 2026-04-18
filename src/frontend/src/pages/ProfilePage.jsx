@@ -1,6 +1,7 @@
 import { Chart, registerables } from "chart.js"
 import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import { getCategoryName } from "../utils/RiderCategoryEnumUtil.js"
+import { useNavigate } from "react-router"
 
 Chart.register(...registerables)
 
@@ -10,6 +11,7 @@ export default function ProfilePage() {
     const canvasRef = useRef(null)
     const voteBarChart = useRef(null)
     const [showPercentages, setShowPercentages] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/user/${sessionStorage.getItem("userId")}`, {
@@ -114,9 +116,23 @@ export default function ProfilePage() {
         return getCategoryName(mostLikedCategory)
     }
 
+    function logout() {
+        sessionStorage.removeItem("jwtToken")
+        sessionStorage.removeItem("userId")
+        navigate("/login")
+    }
+
     return (
         <div className="p-8">
-            <h1 className="text-4xl font-bold py-4">{user && user.username}</h1>
+            <div className="flex items-center justify-between">
+                <h1 className="text-4xl font-bold py-4">{user && user.username}</h1>
+                <button 
+                    className="bg-secondary rounded-md p-2 h-fit justify-center text-white hover:cursor-pointer"
+                    onClick={() => logout()}
+                >
+                    Logout
+                </button>
+            </div>
             <div className="flex flex-col py-2">
                 <div className="flex-col space-x-4 py-4 max-w-full">
                     <p>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import TeamDisplay from "../components/TeamDisplay";
+import { useNavigate } from "react-router";
 
 export default function DisplayTeams() {
     const [teams, setTeams] = useState([])
+    const navigate = useNavigate();
 
      async function loadData () {
         console.log("Bearer " + sessionStorage.getItem("jwtToken"))
@@ -27,7 +29,8 @@ export default function DisplayTeams() {
         <div className="mx-32">
             <div className="flex w-full">
                 <div>
-                    <h2 className="text-4xl p-4">Teams</h2>
+                    <h2 className="text-4xl p-4">Teams beoordelen</h2>
+                    <p onClick={() => navigate("/leaderboard")} className="ml-4 mb-4 text-secondary hover:cursor-pointer hover:font-bold duration-150">Ga naar de ranglijst</p>
                     <div className="grid-cols-4 grid space-y-8 space-x-8 px-4">
                         {teams.map(team => <TeamDisplay team={team} square allowRemoval={sessionStorage.getItem("userRole") == "ROLE_ADMIN"} />)}
                     </div>

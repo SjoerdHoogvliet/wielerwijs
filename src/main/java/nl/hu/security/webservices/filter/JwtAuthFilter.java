@@ -1,6 +1,7 @@
 package nl.hu.security.webservices.filter;
 
 import nl.hu.security.webservices.JwtUtil;
+import nl.hu.security.webservices.UserRole;
 
 import javax.annotation.Priority;
 import javax.ws.rs.HttpMethod;
@@ -8,8 +9,9 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
+import java.security.Principal;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -41,6 +43,35 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
         try {
             JwtUtil.validateToken(token);
+
+            String username = JwtUtil.getUsername(token);
+            String role = JwtUtil.getRole(token).name();
+
+            final SecurityContext originalContext = requestContext.getSecurityContext();
+
+            final SecurityContext securityContext = new SecurityContext() {
+                @Override
+                public Principal getUserPrincipal() {
+                    return () -> username;
+                }
+
+                @Override
+                public boolean isUserInRole(String role) {
+                    return this.getUserPrincipal().getName().equals(username) && UserRole.valueOf(role).equals(JwtUtil.getRole(token));
+                }
+
+                @Override
+                public boolean isSecure() {
+                    return originalContext != null && originalContext.isSecure();
+                }
+
+                @Override
+                public String getAuthenticationScheme() {
+                    return "Bearer ";
+                }
+            };
+
+            requestContext.setSecurityContext(securityContext);
         } catch (Exception e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }

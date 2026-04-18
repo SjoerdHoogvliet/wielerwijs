@@ -11,6 +11,7 @@ import nl.hu.wielerwijs.webservices.CategoryVoteResource;
 import nl.hu.wielerwijs.webservices.RennerResource;
 import nl.hu.wielerwijs.webservices.TeamResource;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 @ApplicationPath("api")
 public class JerseyConfig extends ResourceConfig {
@@ -25,6 +26,7 @@ public class JerseyConfig extends ResourceConfig {
         register(new TeamResource(teamRepository));
         register(new UserResource(userRepository));
         register(new CategoryVoteResource(categoryVoteRepository));
+        register(RolesAllowedDynamicFeature.class);
         packages("nl.hu.wielerwijs.webservices");
         packages("nl.hu.security.webservices");
     }

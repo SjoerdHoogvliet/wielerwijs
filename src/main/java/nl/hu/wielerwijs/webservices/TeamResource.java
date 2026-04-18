@@ -32,9 +32,10 @@ public class TeamResource {
                 renners.add(rennerToJsonConverter(renner));
             }
             job.add("renners", renners);
-            job.add("likes", team.getLikes());
-            job.add("dislikes", team.getDislikes());
         }
+        job.add("owner", team.getOwner().getId());
+        job.add("likes", team.getLikes());
+        job.add("dislikes", team.getDislikes());
         return job.build();
     }
 
@@ -69,8 +70,8 @@ public class TeamResource {
     public String addTeam(String requestBody) {
         JsonObject jsonObject = Json.createReader(new StringReader(requestBody)).readObject();
 
-        Team team = new Team(jsonObject.getString("naam"));
-        System.out.println("Nieuw team: " + team);
+        String teamName = jsonObject.getString("naam");
+        String userId = jsonObject.getString("userId");
         List<String> rennerIds = new ArrayList<>();
         if (jsonObject.containsKey("renners")) {
             for (JsonValue renner : jsonObject.getJsonArray("renners")) {
@@ -82,7 +83,7 @@ public class TeamResource {
         }
 
         try {
-            teamRepository.addTeam(team, rennerIds);
+            teamRepository.addTeam(teamName, userId, rennerIds);
         } catch (IllegalArgumentException e) {
             JsonObjectBuilder job = Json.createObjectBuilder();
             job.add("message", e.getMessage());

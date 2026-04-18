@@ -2,6 +2,8 @@ package nl.hu.wielerwijs.data;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import nl.hu.security.data.UserRepository;
+import nl.hu.security.domain.User;
 import nl.hu.wielerwijs.domain.Renner;
 import nl.hu.wielerwijs.domain.Team;
 
@@ -15,9 +17,11 @@ import java.util.UUID;
 public class TeamRepository {
     private List<Team> teams = new ArrayList<>();
     private final RennerRepository rennerRepository;
+    private final UserRepository userRepository;
 
-    public TeamRepository(RennerRepository rennerRepository) {
+    public TeamRepository(RennerRepository rennerRepository, UserRepository userRepository) {
         this.rennerRepository = rennerRepository;
+        this.userRepository = userRepository;
         loadTeams();
     }
 
@@ -31,7 +35,6 @@ public class TeamRepository {
             String[] nextLine;
             reader.readNext(); // skip header
             while ((nextLine = reader.readNext()) != null) {
-                System.out.println(nextLine[0] + " " + nextLine[1]);
                 String riders = nextLine[2];
                 String[] riderIds = riders.split(";");
                 List<Renner> ridersList = new ArrayList<>();
@@ -41,7 +44,10 @@ public class TeamRepository {
                         ridersList.add(renner);
                     }
                 }
-                Team team = new Team(nextLine[0], nextLine[1], ridersList, Integer.parseInt(nextLine[3]), Integer.parseInt(nextLine[4]));
+
+                User owner = userRepository.getUserById(nextLine[3]);
+
+                Team team = new Team(nextLine[0], nextLine[1], ridersList, owner, Integer.parseInt(nextLine[4]), Integer.parseInt(nextLine[5]));
                 teams.add(team);
             }
         } catch (Exception e) {
@@ -58,7 +64,7 @@ public class TeamRepository {
                 for (Renner renner : team.getRenners()) {
                     renners += renner.getId() + ";";
                 }
-                writer.writeNext(new String[]{team.getId(), team.getNaam(), renners, String.valueOf(team.getLikes()), String.valueOf(team.getDislikes())});
+                writer.writeNext(new String[]{team.getId(), team.getNaam(), renners, team.getOwner().getId(), String.valueOf(team.getLikes()), String.valueOf(team.getDislikes())});
                 System.out.println(team);
             }
         } catch (Exception e) {
@@ -71,7 +77,9 @@ public class TeamRepository {
         return teams;
     }
 
-    public void addTeam(Team team, List<String> renners) {
+    public void addTeam(String teamName, String userId, List<String> renners) {
+        Team team = new Team(teamName, userRepository.getUserById(userId));
+
         // Though UUID basically guarantees uniqueness, there is no absolute guarantee, check uniqueness for certainty
         while (getTeamById(team.getId()) != null) {
             String newId = UUID.randomUUID().toString();

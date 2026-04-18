@@ -1,5 +1,6 @@
 package nl.hu.wielerwijs.webservices;
 
+import javax.annotation.security.RolesAllowed;
 import javax.json.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,6 +44,7 @@ public class RennerResource {
     }
 
     @POST
+    @RolesAllowed("ROLE_ADMIN")
     @Produces(MediaType.APPLICATION_JSON)
     public String addRider(String requestBody) {
         JsonObject jsonObject = Json.createReader(new StringReader(requestBody)).readObject();
@@ -62,6 +64,7 @@ public class RennerResource {
     }
 
     @DELETE
+    @RolesAllowed("ROLE_USER")
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String removeRider(@PathParam("id") String id) {

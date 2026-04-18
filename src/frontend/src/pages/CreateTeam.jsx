@@ -41,6 +41,7 @@ export default function CreateTeam() {
   function saveTeam() {
     var teamObject = {
       naam: teamName,
+      userId: sessionStorage.getItem("userId"),
       renners: team.map(renner => renner.id)
     }
 

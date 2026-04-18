@@ -45,7 +45,7 @@ export default function TeamDisplay(props) {
                         props.team.renners.map(renner => <div>{renner.naam}</div>)
                     }
                 </div>
-                <div className="justify-bottom right-0 flex space-x-4">
+                <div className="justify-bottom mt-auto flex space-x-4">
                     <button 
                         className="bg-green-500 text-white px-4 py-2 rounded-md hover:cursor-pointer"
                         onClick={() => likeTeam()}

@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
 
 export default function LoginPage() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [loginSuccess, setLoginSuccess] = useState(false)
+    const navigate = useNavigate()
 
     function attemptLogin() {
         console.log("Attempting login")
@@ -20,6 +22,8 @@ export default function LoginPage() {
                 if (data != null) {
                     sessionStorage.setItem("jwtToken", data.token)
                     sessionStorage.setItem("userId", data.userId)
+                    sessionStorage.setItem("userRole", data.role)
+                    navigate("/")
                 }
             })
     }

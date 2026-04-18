@@ -19,8 +19,8 @@ public class JerseyConfig extends ResourceConfig {
         System.out.println("Initializing JerseyConfig");
         register(CORSFilter.class);
         RennerRepository rennerRepository = new RennerRepository();
-        TeamRepository teamRepository = new TeamRepository(rennerRepository);
         UserRepository userRepository = new UserRepository();
+        TeamRepository teamRepository = new TeamRepository(rennerRepository, userRepository);
         CategoryVoteRepository categoryVoteRepository = new CategoryVoteRepository(rennerRepository, userRepository);
         register(new RennerResource(rennerRepository));
         register(new TeamResource(teamRepository));
